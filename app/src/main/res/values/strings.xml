@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">xTnote</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_display_">Display_Activity</string>
+    <string name="title_activity_display__activity_2">Display_Activity_2</string>
+    <string name="title_activity_wrong_password_">Wrong_password_Activity</string>
+    <string name="title_activity_read__only_">Read_Only_Activity</string>
+</resources>
