@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
-                        loadingDialog = ProgressDialog.show(MainActivity.this, "Please wait", "Signing in..");
+                        loadingDialog = ProgressDialog.show(MainActivity.this, "Please wait", "Verifying note...");
                     }
 
                     @Override
@@ -103,27 +103,14 @@ public class MainActivity extends AppCompatActivity {
                     protected void onPostExecute(String result) {
 
                         /*Scanner scan = new Scanner(result);
-
                         String status_code = scan.nextLine();*/
-
-
-
 
                         /*String[] lines = result.split(System.getProperty("line.separator"));
                         status_code=lines[1];
                         for(int i=2; i<=lines.length-1;i++)
                         content=content+lines[i];*/
 
-
-
-
-
-
-
-
                         loadingDialog.dismiss();
-
-
 
                         String[] lines = result.split(System.getProperty("line.separator"));
                         int status_code=Integer.parseInt(lines[1]);
@@ -160,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                                 intent3.putExtra("con",content);
                                 intent3.putExtra("kw", keyword);
                                 intent3.putExtra("pw", password);
-                                //Toast.makeText(MainActivity.this,"Password didn't match",Toast.LENGTH_LONG).show();
                                 startActivity(intent3);
                                 break;
 
@@ -169,39 +155,9 @@ public class MainActivity extends AppCompatActivity {
                                 intent4.putExtra("con",content);
                                 intent4.putExtra("kw",keyword);
                                 intent4.putExtra("pw",password);
-                                //Toast.makeText(MainActivity.this,"Password didn't match",Toast.LENGTH_LONG).show();
                                 startActivity(intent4);
 
                         }
-
-
-                        /*if(status_code.equals("10")) {
-                            //Intent intent =new Intent(MainActivity.this, Try_Again_Activity.class);
-                            // tv_result.setText("Password doesn't match..");
-                        }
-                        else if(status_code.equals("11")) {
-                            Intent intent=new Intent(MainActivity.this, Display_Activity.class);
-                            // tv_result.setText("Username doesn't exist..");
-                            intent.putExtra("con",content);
-                            intent.putExtra("kw",keyword);
-                            intent.putExtra("pw",password);
-                            startActivity(intent);
-                        }
-                        else if(status_code.equals("00")) {
-                            Intent intent=new Intent(MainActivity.this, Display_Activity.class);
-                            intent.putExtra("res",result);
-                            intent.putExtra("kw",keyword);
-                            intent.putExtra("pw",password);
-                            startActivity(intent);
-                            //tv_result.setText("Something went wrong. Try again..");
-
-                        }
-
-                       /* else {
-                            Intent intent = new Intent(MainActivity.this, newsfeed.class);
-                            intent.putExtra("sid", result);
-                            startActivity(intent);
-                        }*/
 
                     }
                 }
