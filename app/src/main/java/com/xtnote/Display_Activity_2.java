@@ -1,5 +1,8 @@
 package com.xtnote;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,10 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
 public class Display_Activity_2 extends AppCompatActivity {
     EditText et1;
     TextView tv1;
     Button b1;
+    String appID="sidX349notE",appKey="#$Enter14";
 
     String content,keyword,password;
 
@@ -51,8 +61,85 @@ public class Display_Activity_2 extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Display_Activity_2.this,"Function not yet assigned",Toast.LENGTH_LONG).show();
-            }
+
+                /*content=et1.getText().toString();
+
+
+                class LoginAsync extends AsyncTask<String, Void, String> {
+
+                    private Dialog loadingDialog;
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "Please wait", "Saving...");
+                    }
+
+                    @Override
+                    protected String doInBackground(String... params) {
+
+                        String lnk = params[0];
+                        String pass = params[1];
+                        String data = params[2];
+                        String appID = params[3];
+                        String appKey = params[4];
+
+                        try {
+
+                            String link = "http://xtnote.com/xt_api.php";
+                            String postData = "lnk=" + URLEncoder.encode(lnk, "UTF-8") + "&pass=" + URLEncoder.encode(pass, "UTF-8");
+
+                            URL url = new URL(link);
+                            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+                            con.setRequestMethod("POST");
+                            con.setDoOutput(true);
+
+                            DataOutputStream contentWriter = new DataOutputStream(con.getOutputStream());
+                            contentWriter.writeBytes(postData);
+                            contentWriter.flush();
+                            contentWriter.close();
+
+                        } catch (IOException e) {
+                            return null;
+                        }
+
+                        return null;
+
+                    }
+
+                    @Override
+                    protected void onPostExecute(String result) {
+
+                        loadingDialog.dismiss();
+
+                        int resp=Integer.parseInt(result);
+
+                        switch(resp){
+
+                            case 00:
+
+                                Toast.makeText(Display_Activity_2.this,"Note is empty",Toast.LENGTH_LONG).show();
+                                break;
+
+                            case 10:
+
+                                Toast.makeText(Display_Activity_2.this,"Password didn't match",Toast.LENGTH_LONG).show();
+                                break;
+
+                            case 11:
+
+                                Toast.makeText(Display_Activity_2.this,"Note saved successfully",Toast.LENGTH_LONG).show();
+                                break;
+
+                        }
+
+                    }
+                }
+
+                new LoginAsync().execute(keyword,password,content,appID,appKey);
+            */}
+
         });
     }
 

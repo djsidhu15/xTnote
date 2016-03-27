@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         loadingDialog.dismiss();
 
                         String[] lines = result.split(System.getProperty("line.separator"));
-                        int status_code=Integer.parseInt(lines[1]);
+                        String status_code=lines[1];
                         content="";
                         for(int i=2; i<=lines.length-1;i++)
                             content=content+lines[i];
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (status_code)
                         {
-                            case 00:
+                            case "00":
                                 Intent intent=new Intent(MainActivity.this, Display_Activity_2.class);
                                 intent.putExtra("con",content);
                                 intent.putExtra("kw",keyword);
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
 
-                            case 10:
+                            case "10":
                                 Intent intent2=new Intent(MainActivity.this, Wrong_password_Activity.class);
                                 intent2.putExtra("kw",keyword);
                                 intent2.putExtra("pw", password);
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent2);
                                 break;
 
-                            case 11:
+                            case "11":
                                 Intent intent3=new Intent(MainActivity.this, Display_Activity.class);
                                 intent3.putExtra("a",a);
                                 intent3.putExtra("con",content);
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent3);
                                 break;
 
-                            case 101:
+                            case "101":
                                 Intent intent4=new Intent(MainActivity.this, Read_Only_Activity.class);
                                 intent4.putExtra("con",content);
                                 intent4.putExtra("kw",keyword);
