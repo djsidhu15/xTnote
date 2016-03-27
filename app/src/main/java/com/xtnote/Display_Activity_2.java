@@ -14,8 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -24,7 +26,7 @@ public class Display_Activity_2 extends AppCompatActivity {
     EditText et1;
     TextView tv1;
     Button b1;
-    String appID="sidX349notE",appKey="#$Enter14";
+    String appID="sidX349notE",appKey="#$Enter14",itr="value",text="";
 
     String content,keyword,password;
 
@@ -62,7 +64,7 @@ public class Display_Activity_2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                /*content=et1.getText().toString();
+                content=et1.getText().toString();
 
 
                 class LoginAsync extends AsyncTask<String, Void, String> {
@@ -87,7 +89,7 @@ public class Display_Activity_2 extends AppCompatActivity {
                         try {
 
                             String link = "http://xtnote.com/xt_api.php";
-                            String postData = "lnk=" + URLEncoder.encode(lnk, "UTF-8") + "&pass=" + URLEncoder.encode(pass, "UTF-8");
+                            String postData = "lnk=" + URLEncoder.encode(lnk, "UTF-8") + "&pass=" + URLEncoder.encode(pass, "UTF-8") + "&data=" + URLEncoder.encode(data, "UTF-8") + "&appID=" + URLEncoder.encode(appID, "UTF-8") + "&appKey=" + URLEncoder.encode(appKey, "UTF-8");
 
                             URL url = new URL(link);
                             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -97,48 +99,52 @@ public class Display_Activity_2 extends AppCompatActivity {
 
                             DataOutputStream contentWriter = new DataOutputStream(con.getOutputStream());
                             contentWriter.writeBytes(postData);
+
                             contentWriter.flush();
                             contentWriter.close();
 
+                            BufferedReader contentReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                            itr=contentReader.readLine();
+                            
+
                         } catch (IOException e) {
-                            return null;
+                            return "a";
                         }
-
-                        return null;
-
+                        return itr;
                     }
 
                     @Override
                     protected void onPostExecute(String result) {
 
                         loadingDialog.dismiss();
+                        Toast.makeText(Display_Activity_2.this,result, Toast.LENGTH_LONG).show();
 
-                        int resp=Integer.parseInt(result);
+                        et1.setText(result);
 
-                        switch(resp){
+                        /*switch(result){
 
-                            case 00:
+                            case "00":
 
                                 Toast.makeText(Display_Activity_2.this,"Note is empty",Toast.LENGTH_LONG).show();
                                 break;
 
-                            case 10:
+                            case "10":
 
                                 Toast.makeText(Display_Activity_2.this,"Password didn't match",Toast.LENGTH_LONG).show();
                                 break;
 
-                            case 11:
+                            case "11":
 
                                 Toast.makeText(Display_Activity_2.this,"Note saved successfully",Toast.LENGTH_LONG).show();
                                 break;
 
-                        }
+                        }*/
 
                     }
                 }
 
                 new LoginAsync().execute(keyword,password,content,appID,appKey);
-            */}
+            }
 
         });
     }
