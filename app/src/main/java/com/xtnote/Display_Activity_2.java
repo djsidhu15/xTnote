@@ -2,6 +2,7 @@ package com.xtnote;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -104,24 +105,34 @@ public class Display_Activity_2 extends AppCompatActivity {
                             contentWriter.close();
 
                             BufferedReader contentReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                            itr=contentReader.readLine();
-                            
+                            /*itr=contentReader.readLine();
+                            itr=contentReader.readLine();*/
+                            while(true) {
+                                itr=contentReader.readLine();
+                                if(itr==null)
+                                    break;
+                                text +="\n";
+                                text +=itr;
+                            }
+
+                            return text;
+
 
                         } catch (IOException e) {
                             return "a";
                         }
-                        return itr;
                     }
+
 
                     @Override
                     protected void onPostExecute(String result) {
 
                         loadingDialog.dismiss();
-                        Toast.makeText(Display_Activity_2.this,result, Toast.LENGTH_LONG).show();
 
-                        et1.setText(result);
+                        String[] lines = result.split(System.getProperty("line.separator"));
+                        String status_code=lines[1];
 
-                        /*switch(result){
+                        switch(status_code){
 
                             case "00":
 
@@ -135,10 +146,107 @@ public class Display_Activity_2 extends AppCompatActivity {
 
                             case "11":
 
-                                Toast.makeText(Display_Activity_2.this,"Note saved successfully",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(Display_Activity_2.this,"Saved",Toast.LENGTH_LONG).show();
+
+
+                                class LoginAsync2 extends AsyncTask<String, Void, String> {
+
+                                    private Dialog loadingDialog;
+
+                                    @Override
+                                    protected void onPreExecute() {
+                                        super.onPreExecute();
+                                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "Please wait", "Saving...");
+                                    }
+
+                                    @Override
+                                    protected String doInBackground(String... params) {
+
+                                        String usr = params[0];
+                                        String pass = params[1];
+
+                                        try {
+                                            String link="http://www.xtnote.com/xt_api.php?lnk=" + usr + "&pass=" + pass;
+                                            URL url= new URL(link);
+                                            HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+                                            BufferedReader content = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                                            String text = "";
+                                            String itr = "";
+                                            while(true) {
+                                                itr=content.readLine();
+                                                if(itr==null)
+                                                    break;
+                                                text +="\n";
+                                                text +=itr;
+                                            }
+                                            return text;
+                                        }
+                                        catch(Exception e) {
+                                            return null;
+                                        }
+
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String result) {
+
+                        /*Scanner scan = new Scanner(result);
+                        String status_code = scan.nextLine();*/
+
+                        /*String[] lines = result.split(System.getProperty("line.separator"));
+                        status_code=lines[1];
+                        for(int i=2; i<=lines.length-1;i++)
+                        content=content+lines[i];*/
+
+                                        loadingDialog.dismiss();
+
+                                        String[] lines = result.split(System.getProperty("line.separator"));
+                                        String status_code=lines[1];
+                                        content="";
+                                        for(int i=2; i<=lines.length-1;i++)
+                                            content=content+lines[i];
+
+
+
+
+
+                                        switch (status_code)
+                                        {
+
+
+                                            case "10":
+                                                Intent intent2=new Intent(Display_Activity_2.this, Wrong_password_Activity.class);
+                                                intent2.putExtra("kw",keyword);
+                                                intent2.putExtra("pw", password);
+                                                Toast.makeText(Display_Activity_2.this,"Password is changed.. Re-enter the password",Toast.LENGTH_LONG).show();
+                                                startActivity(intent2);
+                                                break;
+
+                                            case "11":
+                                                Intent intent3=new Intent(Display_Activity_2.this, Display_Activity.class);
+                                                intent3.putExtra("con",content);
+                                                intent3.putExtra("kw", keyword);
+                                                intent3.putExtra("pw", password);
+                                                Toast.makeText(Display_Activity_2.this,"Successfully Saved",Toast.LENGTH_LONG).show();
+                                                startActivity(intent3);
+                                                break;
+
+                                            case "101":
+                                                Intent intent4=new Intent(Display_Activity_2.this, Read_Only_Activity.class);
+                                                intent4.putExtra("con",content);
+                                                intent4.putExtra("kw",keyword);
+                                                intent4.putExtra("pw",password);
+                                                startActivity(intent4);
+
+                                        }
+
+                                    }
+                                }
+                                new LoginAsync2().execute(keyword,password,content,appID,appKey);
+
                                 break;
 
-                        }*/
+                        }
 
                     }
                 }
