@@ -1,6 +1,7 @@
 package com.xtnote;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,10 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class Display_Activity extends AppCompatActivity {
-    TextView tv1,tv2;
+    TextView tv1, tv2;
     Button b1;
-    String content,keyword,password;
+    String content, keyword, password;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,38 +31,83 @@ public class Display_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_display_);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Snackbar.make(new View(Display_Activity.this), "Note loaded", Snackbar.LENGTH_SHORT).setAction("Action",null).show();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
-        tv1=(TextView)findViewById(R.id.tv1);
-        tv2=(TextView)findViewById(R.id.tv2);
-        b1=(Button)findViewById(R.id.b1);
+        tv1 = (TextView) findViewById(R.id.tv1);
+        tv2 = (TextView) findViewById(R.id.tv2);
+        b1 = (Button) findViewById(R.id.b1);
 
-        Bundle bundle=getIntent().getExtras();
-        content=bundle.getString("con");
-        keyword=bundle.getString("kw");
-        password=bundle.getString("pw");
+        Bundle bundle = getIntent().getExtras();
+        content = bundle.getString("con");
+        keyword = bundle.getString("kw");
+        password = bundle.getString("pw");
 
-        tv1.setText("www.xtnote.com/"+keyword);
+        tv1.setText("www.xtnote.com/" + keyword);
         tv2.setText(content);
+
+        getSupportActionBar().setTitle("xTnote.com/"+keyword);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Display_Activity.this, Display_Activity_2.class);
-                intent.putExtra("con",content);
+                Intent intent = new Intent(Display_Activity.this, Display_Activity_2.class);
+                intent.putExtra("con", content);
                 intent.putExtra("kw", keyword);
                 intent.putExtra("pw", password);
                 startActivity(intent);
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Display_ Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.xtnote/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Display_ Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.xtnote/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }

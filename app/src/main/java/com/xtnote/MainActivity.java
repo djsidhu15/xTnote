@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,21 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
     int a;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //CoordinatorLayout col=(CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        //Snackbar.make(col,"xTnote - Password is optional for creating a new note",Snackbar.LENGTH_LONG).show();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         et1=(EditText)findViewById(R.id.et1);
         et2=(EditText)findViewById(R.id.et2);
@@ -57,50 +62,52 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                keyword = et1.getText().toString();
+                password = et2.getText().toString();
 
-                keyword=et1.getText().toString();
-                password=et2.getText().toString();
+                if (TextUtils.isEmpty(keyword))
+                    et1.setError("Enter Note name");
+                else {
 
-                class LoginAsync extends AsyncTask<String, Void, String> {
+                    class LoginAsync extends AsyncTask<String, Void, String> {
 
-                    private Dialog loadingDialog;
+                        private Dialog loadingDialog;
 
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        loadingDialog = ProgressDialog.show(MainActivity.this, "Please wait", "Verifying note...");
-                    }
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            loadingDialog = ProgressDialog.show(MainActivity.this, "Please wait", "Verifying note...");
+                        }
 
-                    @Override
-                    protected String doInBackground(String... params) {
+                        @Override
+                        protected String doInBackground(String... params) {
 
-                        String usr = params[0];
-                        String pass = params[1];
+                            String usr = params[0];
+                            String pass = params[1];
 
-                        try {
-                            String link="http://www.xtnote.com/xt_api.php?lnk=" + usr + "&pass=" + pass;
-                            URL url= new URL(link);
-                            HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-                            BufferedReader content = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                            String text = "";
-                            String itr = "";
-                            while(true) {
-                                itr=content.readLine();
-                                if(itr==null)
-                                    break;
-                                text +="\n";
-                                text +=itr;
+                            try {
+                                String link = "http://www.xtnote.com/xt_api.php?lnk=" + usr + "&pass=" + pass;
+                                URL url = new URL(link);
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                BufferedReader content = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                                String text = "";
+                                String itr = "";
+                                while (true) {
+                                    itr = content.readLine();
+                                    if (itr == null)
+                                        break;
+                                    text += "\n";
+                                    text += itr;
+                                }
+                                return text;
+                            } catch (Exception e) {
+                                return null;
                             }
-                            return text;
-                        }
-                        catch(Exception e) {
-                            return null;
+
                         }
 
-                    }
-
-                    @Override
-                    protected void onPostExecute(String result) {
+                        @Override
+                        protected void onPostExecute(String result) {
 
                         /*Scanner scan = new Scanner(result);
                         String status_code = scan.nextLine();*/
@@ -110,70 +117,70 @@ public class MainActivity extends AppCompatActivity {
                         for(int i=2; i<=lines.length-1;i++)
                         content=content+lines[i];*/
 
-                        loadingDialog.dismiss();
+                            loadingDialog.dismiss();
 
-                        String[] lines = result.split(System.getProperty("line.separator"));
-                        String status_code=lines[1];
-                        content="";
-                        for(int i=2; i<=lines.length-1;i++)
-                            content=content+lines[i];
+                            String[] lines = result.split(System.getProperty("line.separator"));
+                            String status_code = lines[1];
+                            content = "";
+                            for (int i = 2; i <= lines.length - 1; i++) {
+                                content = content + lines[i];
+                                content += "\n";
+                            }
 
 
+                            switch (status_code) {
+                                case "00":
+                                    Intent intent = new Intent(MainActivity.this, Display_Activity_2.class);
+                                    intent.putExtra("con", content);
+                                    intent.putExtra("kw", keyword);
+                                    intent.putExtra("pw", password);
+                                    Toast.makeText(MainActivity.this, "Create a new note", Toast.LENGTH_LONG).show();
+                                    startActivity(intent);
+                                    break;
 
+                                case "10":
+                                    Intent intent2 = new Intent(MainActivity.this, Wrong_password_Activity.class);
+                                    intent2.putExtra("kw", keyword);
+                                    intent2.putExtra("pw", password);
+                                    //Toast.makeText(MainActivity.this, content, Toast.LENGTH_LONG).show();
+                                    startActivity(intent2);
+                                    break;
 
+                                case "11":
+                                    Intent intent3 = new Intent(MainActivity.this, Display_Activity.class);
+                                    intent3.putExtra("a", a);
+                                    intent3.putExtra("con", content);
+                                    intent3.putExtra("kw", keyword);
+                                    intent3.putExtra("pw", password);
+                                    startActivity(intent3);
+                                    break;
 
-                        switch (status_code)
-                        {
-                            case "00":
-                                Intent intent=new Intent(MainActivity.this, Display_Activity_2.class);
-                                intent.putExtra("con",content);
-                                intent.putExtra("kw",keyword);
-                                intent.putExtra("pw", password);
-                                Toast.makeText(MainActivity.this,"Create a new note",Toast.LENGTH_LONG).show();
-                                startActivity(intent);
-                                break;
+                                case "101":
+                                    Intent intent4 = new Intent(MainActivity.this, Read_Only_Activity.class);
+                                    intent4.putExtra("con", content);
+                                    intent4.putExtra("kw", keyword);
+                                    intent4.putExtra("pw", password);
+                                    startActivity(intent4);
 
-                            case "10":
-                                Intent intent2=new Intent(MainActivity.this, Wrong_password_Activity.class);
-                                intent2.putExtra("kw",keyword);
-                                intent2.putExtra("pw", password);
-                                Toast.makeText(MainActivity.this,content,Toast.LENGTH_LONG).show();
-                                startActivity(intent2);
-                                break;
-
-                            case "11":
-                                Intent intent3=new Intent(MainActivity.this, Display_Activity.class);
-                                intent3.putExtra("a",a);
-                                intent3.putExtra("con",content);
-                                intent3.putExtra("kw", keyword);
-                                intent3.putExtra("pw", password);
-                                startActivity(intent3);
-                                break;
-
-                            case "101":
-                                Intent intent4=new Intent(MainActivity.this, Read_Only_Activity.class);
-                                intent4.putExtra("con",content);
-                                intent4.putExtra("kw",keyword);
-                                intent4.putExtra("pw",password);
-                                startActivity(intent4);
+                            }
 
                         }
-
                     }
+
+                    new LoginAsync().execute(keyword, password);
+
                 }
-
-                new LoginAsync().execute(keyword,password);
-
             }
         });
     }
 
-    @Override
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -27,7 +27,7 @@ public class Display_Activity_2 extends AppCompatActivity {
     EditText et1;
     TextView tv1;
     Button b1;
-    String appID="sidX349notE",appKey="#$Enter14",itr="value",text="";
+    String itr="value",text="";
 
     String content,keyword,password;
 
@@ -39,14 +39,14 @@ public class Display_Activity_2 extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         tv1=(TextView)findViewById(R.id.tv1);
         et1=(EditText)findViewById(R.id.et1);
@@ -58,6 +58,7 @@ public class Display_Activity_2 extends AppCompatActivity {
         password=bundle.getString("pw");
 
         String note_name="www.xtnote.com/"+keyword;
+        getSupportActionBar().setTitle("xTnote.com/"+keyword);
         tv1.setText(note_name);
         et1.setText(content);
 
@@ -75,7 +76,7 @@ public class Display_Activity_2 extends AppCompatActivity {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
-                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "Please wait", "Saving...");
+                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "", "Saving...");
                     }
 
                     @Override
@@ -156,7 +157,7 @@ public class Display_Activity_2 extends AppCompatActivity {
                                     @Override
                                     protected void onPreExecute() {
                                         super.onPreExecute();
-                                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "Please wait", "Saving...");
+                                        loadingDialog = ProgressDialog.show(Display_Activity_2.this, "", "Refreshing...");
                                     }
 
                                     @Override
@@ -203,8 +204,10 @@ public class Display_Activity_2 extends AppCompatActivity {
                                         String[] lines = result.split(System.getProperty("line.separator"));
                                         String status_code=lines[1];
                                         content="";
-                                        for(int i=2; i<=lines.length-1;i++)
-                                            content=content+lines[i];
+                                        for(int i=2; i<=lines.length-1;i++) {
+                                            content = content + lines[i];
+                                            content += "\n";
+                                        }
 
 
 
@@ -242,7 +245,7 @@ public class Display_Activity_2 extends AppCompatActivity {
 
                                     }
                                 }
-                                new LoginAsync2().execute(keyword,password,content,appID,appKey);
+                                new LoginAsync2().execute(keyword,password,content,"sidX349notE","#$Enter14");
 
                                 break;
 
@@ -251,7 +254,7 @@ public class Display_Activity_2 extends AppCompatActivity {
                     }
                 }
 
-                new LoginAsync().execute(keyword,password,content,appID,appKey);
+                new LoginAsync().execute(keyword,password,content,"sidX349notE","#$Enter14");
             }
 
         });

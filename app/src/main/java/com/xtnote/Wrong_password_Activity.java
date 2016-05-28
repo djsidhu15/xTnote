@@ -37,14 +37,14 @@ public class Wrong_password_Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
 
         et1=(EditText)findViewById(R.id.et1);
@@ -56,6 +56,7 @@ public class Wrong_password_Activity extends AppCompatActivity {
         keyword=bundle.getString("kw");
         password=bundle.getString("pw");
         tv1.setText("www.xtnote.com/"+keyword);
+        getSupportActionBar().setTitle("xTnote.com/"+keyword);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override

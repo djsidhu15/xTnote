@@ -19,14 +19,14 @@ public class Read_Only_Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         tv1=(TextView)findViewById(R.id.tv1);
         tv2=(TextView)findViewById(R.id.tv2);
@@ -36,6 +36,7 @@ public class Read_Only_Activity extends AppCompatActivity {
         keyword=bundle.getString("kw");
         password=bundle.getString("pw");
 
+        getSupportActionBar().setTitle("xTnote.com/" + keyword);
         tv1.setText("www.xtnote.com/"+keyword);
         tv2.setText(content);
 
